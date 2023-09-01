@@ -20,6 +20,9 @@ public partial class MainPage : ContentPage
 
 		SemanticScreenReader.Announce(CounterBtn.Text);
 	}
+
+	void OnDisableClicked(System.Object sender, System.EventArgs e)
+	{
+        CounterBtn.IsEnabled = !CounterBtn.IsEnabled;
+    }
 }
-
-
