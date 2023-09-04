@@ -20,7 +20,7 @@
         <Setter Property="TextColor" Value="Gray" />
     </Style>
 
-    <Style x:Key="SecondaryButtonStatesStyle" TargetType="Button">
+    <Style TargetType="Button">
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">

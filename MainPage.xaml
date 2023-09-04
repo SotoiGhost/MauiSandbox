@@ -33,8 +33,7 @@
                 Text="Click me"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Center"
-                Style="{StaticResource SecondaryButtonStatesStyle}">
+                HorizontalOptions="Center">
                 <!--<VisualStateManager.VisualStateGroups>
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
