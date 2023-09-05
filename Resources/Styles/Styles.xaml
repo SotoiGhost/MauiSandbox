@@ -20,24 +20,19 @@
         <Setter Property="TextColor" Value="Gray" />
     </Style>
 
-    <Style TargetType="Button">
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="Style" Value="{StaticResource SecondaryButtonStyle}" />
-                        </VisualState.Setters>
-                    </VisualState>
-
-                    <VisualState x:Name="Disabled">
-                        <VisualState.Setters>
-                            <Setter Property="Style" Value="{StaticResource SecondaryButtonDisableStyle}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
+    <Style x:Key="SecondaryButtonTriggersStyle" TargetType="Button">
+        <Style.Triggers>
+            <Trigger TargetType="Button"
+                     Property="IsEnabled"
+                     Value="True">
+                <Setter Property="Style" Value="{StaticResource SecondaryButtonStyle}" />
+            </Trigger>
+            <Trigger TargetType="Button"
+                     Property="IsEnabled"
+                     Value="False">
+                <Setter Property="Style" Value="{StaticResource SecondaryButtonDisableStyle}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

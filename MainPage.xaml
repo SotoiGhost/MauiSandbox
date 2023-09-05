@@ -33,24 +33,20 @@
                 Text="Click me"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Center">
-                <!--<VisualStateManager.VisualStateGroups>
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="Style" Value="{StaticResource SecondaryButtonStyle}" />
-                                </VisualState.Setters>
-                            </VisualState>
-
-                            <VisualState x:Name="Disabled">
-                                <VisualState.Setters>
-                                    <Setter Property="Style" Value="{StaticResource SecondaryButtonDisableStyle}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </VisualStateManager.VisualStateGroups>-->
+                HorizontalOptions="Center"
+                Style="{StaticResource SecondaryButtonTriggersStyle}">
+                <!--<Button.Triggers>
+                    <Trigger TargetType="Button"
+                             Property="IsEnabled"
+                             Value="True">
+                        <Setter Property="Style" Value="{StaticResource SecondaryButtonStyle}" />
+                    </Trigger>
+                    <Trigger TargetType="Button"
+                             Property="IsEnabled"
+                             Value="False">
+                        <Setter Property="Style" Value="{StaticResource SecondaryButtonDisableStyle}" />
+                    </Trigger>
+                </Button.Triggers>-->
             </Button>
 
             <Button
