@@ -55,6 +55,7 @@
             </Button>
 
             <Button
+                x:Name="ToggleBtn"
                 Text="Disable button"
                 Clicked="OnDisableClicked"
                 HorizontalOptions="Center">

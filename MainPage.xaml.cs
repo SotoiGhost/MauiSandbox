@@ -24,5 +24,7 @@ public partial class MainPage : ContentPage
 	void OnDisableClicked(System.Object sender, System.EventArgs e)
 	{
         CounterBtn.IsEnabled = !CounterBtn.IsEnabled;
+        CounterBtn.Text = $"I'm {(CounterBtn.IsEnabled ? "enabled" : "disabled")}";
+        ToggleBtn.Text = $"{(CounterBtn.IsEnabled ? "Disable" : "Enable")} button";
     }
 }
