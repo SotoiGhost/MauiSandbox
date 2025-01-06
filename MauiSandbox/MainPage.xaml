@@ -30,6 +30,21 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
+
+            <Button
+                Text="Log Message using Console"
+                Clicked="LogConsoleMessageClicked"
+                HorizontalOptions="Fill" />
+
+            <Button
+                Text="Log Message using Diagnostics.Debug"
+                Clicked="LogDiagnosticsDebugMessageClicked"
+                HorizontalOptions="Fill" />
+
+            <Button
+                Text="Log Message using Native Logger"
+                Clicked="LogNativeMessageClicked"
+                HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
 

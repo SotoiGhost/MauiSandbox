@@ -1,4 +1,6 @@
-﻿namespace MauiSandbox;
+﻿using MauiSandbox.Services;
+
+namespace MauiSandbox;
 
 public partial class MainPage : ContentPage
 {
@@ -19,6 +21,21 @@ public partial class MainPage : ContentPage
 			CounterBtn.Text = $"Clicked {count} times";
 
 		SemanticScreenReader.Announce(CounterBtn.Text);
+	}
+
+	private void LogConsoleMessageClicked(object sender, EventArgs e)
+	{
+		Logger.LogMessageUsingConsole ("Hello there!");
+	}
+
+	private void LogDiagnosticsDebugMessageClicked(object sender, EventArgs e)
+	{
+		Logger.LogMessageUsingDiagnosticsDebug ("Hello there!");
+	}
+
+	private void LogNativeMessageClicked(object sender, EventArgs e)
+	{
+		Logger.LogMessageUsingNativeLogger ("Hello there!");
 	}
 }
 
