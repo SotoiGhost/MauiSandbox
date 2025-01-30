@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765345281295",
+    "project_id": "testing-push-notificatio-14d0b",
+    "storage_bucket": "testing-push-notificatio-14d0b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765345281295:android:60600ea883db9c6a3fba7a",
+        "android_client_info": {
+          "package_name": "com.turtlebeach.XEFAH.iOS"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyLIwJPQds8XtZEUqEw2mdbX0o039LQZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
