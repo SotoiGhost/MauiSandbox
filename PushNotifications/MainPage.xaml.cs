@@ -25,6 +25,13 @@ public partial class MainPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
+		#if IOS
+		await Firebase.CloudMessaging.Messaging.SharedInstance.SubscribeAsync("all");
+		await Firebase.CloudMessaging.Messaging.SharedInstance.SubscribeAsync("ios");
+		#else
+		Firebase.Messaging.FirebaseMessaging.Instance.SubscribeToTopic("all");
+		Firebase.Messaging.FirebaseMessaging.Instance.SubscribeToTopic("android");
+		#endif
 		PermissionStatus permissionStatus = await Permissions.CheckStatusAsync<Permissions.PostNotifications>();
 
 		if (permissionStatus != PermissionStatus.Granted)
@@ -39,6 +46,7 @@ public partial class MainPage : ContentPage
 
 		await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
 		var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
+		Console.WriteLine($"Token: {token}");
 
 		await Share.RequestAsync(new ShareTextRequest
 		{

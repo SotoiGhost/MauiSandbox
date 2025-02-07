@@ -2,6 +2,9 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+
+using AndroidX.Core.App;
+
 using Plugin.Firebase.CloudMessaging;
 
 namespace PushNotifications;
@@ -22,10 +25,17 @@ public class MainActivity : MauiAppCompatActivity
         HandleIntent(intent);
     }
 
-    private static void HandleIntent(Intent? intent)
+    private void HandleIntent(Intent? intent)
     {
-        Console.WriteLine(intent?.HasExtra("intent_key_fcm_notification"));
-        FirebaseCloudMessagingImplementation.OnNewIntent(intent);
+		if (intent?.Action == "OPEN_ACTION") {
+			NotificationManagerCompat.From (this).Cancel (0);
+			var acceptIntent = new Intent (Intent.ActionView)
+				.SetFlags (ActivityFlags.NewTask | ActivityFlags.FromBackground)
+				.SetData (Android.Net.Uri.Parse ("https://www.turtlebeach.com/"));
+			StartActivity (acceptIntent);
+		} else {
+			FirebaseCloudMessagingImplementation.OnNewIntent (intent);
+		}
     }
 
     private void CreateNotificationChannelIfNeeded()
