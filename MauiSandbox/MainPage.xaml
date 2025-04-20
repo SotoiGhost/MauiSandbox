@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiSandbox.MainPage">
+             xmlns:pages="clr-namespace:MauiSandbox"
+             x:Class="MauiSandbox.MainPage"
+             x:DataType="pages:PageViewModel">
+    <ContentPage.BindingContext>
+        <pages:PageViewModel />
+    </ContentPage.BindingContext>
 
     <ScrollView>
         <VerticalStackLayout
@@ -29,6 +34,12 @@
                 Text="Click me" 
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
+                HorizontalOptions="Fill" />
+
+            <Button
+                Text="Go to second page" 
+                Command="{Binding NavigateToCommand}"
+                CommandParameter="{x:Type pages:SecondPage}"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
