@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:MauiSandbox.Controls"
+             xmlns:genericControls="clr-namespace:MauiSandbox.Controls.Generics"
+             xmlns:viewModels="clr-namespace:MauiSandbox.ViewModels"
+             xmlns:enums="clr-namespace:MauiSandbox.Enums"
+             x:DataType="viewModels:MainViewModel"
              x:Class="MauiSandbox.MainPage">
 
     <ScrollView>
@@ -30,7 +35,25 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
+
+            <controls:SingleOptionSelectorControl
+                x:Name="singleOptionSelector"
+                ItemSource="{Binding ItemSource}" />
+
+            <!-- <genericControls:SingleOptionSelectorControl
+                x:TypeArguments="enums:GAME_EQ_SLOT"
+                ItemSource="{Binding GameEQPresetModeList}"
+                PresetClickedCommand="{Binding PresetClickedCommand}" />
+
+            <genericControls:SingleOptionSelectorControl
+                x:TypeArguments="enums:MIC_EQ_SLOT"
+                ItemSource="{Binding MicEQPresetModeList}"
+                PresetClickedCommand="{Binding PresetClickedCommand}" /> -->
+
+            <Button
+                Text="Add option" 
+                Command="{Binding AddOptionCommand}"
+                HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

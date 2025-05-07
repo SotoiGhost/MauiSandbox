@@ -1,0 +1,61 @@
+<Border
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiSandbox.Controls.SingleOptionSelectorControl"
+    xmlns:models="clr-namespace:MauiSandbox.Controls"
+    x:Name="mainContainer">
+    <Border
+        StrokeShape="RoundRectangle 10"
+        StrokeThickness="0"
+        MinimumHeightRequest="34"
+        Padding="0">
+        <FlexLayout
+            x:Name="containerList"
+            Direction="Row"
+            Wrap="Wrap"
+            JustifyContent="SpaceEvenly">
+
+            <!-- <BindableLayout.ItemTemplate>
+            <DataTemplate
+                x:DataType="models:AINRModel">
+                <StackLayout
+                    FlexLayout.Basis="33%">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding PresetClickedInternalCommand, Source={x:Reference mainContainer}}"
+                            CommandParameter="{Binding .}" />
+                    </StackLayout.GestureRecognizers>
+                    <Label
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding Name}"/>
+                </StackLayout>
+            </DataTemplate>
+
+        </BindableLayout.ItemTemplate> -->
+
+            <BindableLayout.ItemTemplate>
+                <DataTemplate
+                    x:DataType="models:AINRModel">
+                    <!--TODO : Consider the basis when you use this control
+                Basis = percentage of total space in flexlayout-->
+                    <Label
+                        FlexLayout.Basis="33%"
+                        HorizontalOptions="Fill"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding Name}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding PresetClickedInternalCommand, Source={x:Reference mainContainer}}"
+                                CommandParameter="{Binding .}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </DataTemplate>
+
+            </BindableLayout.ItemTemplate>
+
+        </FlexLayout>
+    </Border>
+
+</Border>

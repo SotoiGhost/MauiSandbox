@@ -1,15 +1,21 @@
-﻿namespace MauiSandbox;
+﻿using System.Collections.ObjectModel;
 
-public partial class MainPage : ContentPage
-{
+using MauiSandbox.Controls;
+using MauiSandbox.ViewModels;
+
+namespace MauiSandbox;
+
+public partial class MainPage : ContentPage {
 	int count = 0;
+	MainViewModel _viewModel = new MainViewModel ();
 
-	public MainPage()
+	public MainPage ()
 	{
-		InitializeComponent();
+		InitializeComponent ();
+		BindingContext = _viewModel;
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+	private void OnCounterClicked (object sender, EventArgs e)
 	{
 		count++;
 
@@ -18,7 +24,12 @@ public partial class MainPage : ContentPage
 		else
 			CounterBtn.Text = $"Clicked {count} times";
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
+		SemanticScreenReader.Announce (CounterBtn.Text);
+	}
+
+	private void AddOptionClicked (object sender, EventArgs e)
+	{
+		// _itemSource.Add (new AINRModel { Name = $"Option {_itemSource.Count + 1}", IsSelected = false });
 	}
 }
 
