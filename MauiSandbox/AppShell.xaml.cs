@@ -1,9 +1,13 @@
-﻿namespace MauiSandbox;
+﻿using MauiSandbox.Views;
+
+namespace MauiSandbox;
 
 public partial class AppShell : Shell
 {
-	public AppShell()
+	public AppShell ()
 	{
-		InitializeComponent();
+		InitializeComponent ();
+		
+		Routing.RegisterRoute(nameof(CarDetailsPage), typeof(CarDetailsPage));
 	}
 }

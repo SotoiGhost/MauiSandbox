@@ -1,0 +1,60 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using MauiSandbox.Models;
+using MauiSandbox.Services;
+using MauiSandbox.Views;
+
+namespace MauiSandbox.ViewModels;
+
+public partial class CarListViewModel : BaseViewModel {
+	public ObservableCollection<Car> Cars { get; private set; } = [];
+
+	public CarListViewModel ()
+	{
+		Title = "Car List";
+	}
+
+	[ObservableProperty]
+	bool isRefreshing;
+
+	[RelayCommand]
+	async Task GetCarsList ()
+	{
+		if (IsLoading)
+			return;
+
+		try {
+			IsLoading = true;
+
+			if (Cars.Any ())
+				Cars.Clear ();
+
+			var cars = App.CarService!.GetCars ();
+
+			foreach (var car in cars)
+				Cars.Add (car);
+		} catch (Exception ex) {
+			Debug.WriteLine ($"Unable to get cars: {ex.Message}");
+			await Shell.Current.DisplayAlert ("Error", ex.Message, "OK");
+		} finally {
+			IsLoading = false;
+			IsRefreshing = false;
+		}
+	}
+
+	[RelayCommand]
+	async Task GetCarDetails (Car car)
+	{
+		if (car == null)
+			return;
+
+		await Shell.Current.GoToAsync (nameof(CarDetailsPage), true, new Dictionary<string, object> {
+			[nameof(Car)] = car,
+		});
+	}
+}
