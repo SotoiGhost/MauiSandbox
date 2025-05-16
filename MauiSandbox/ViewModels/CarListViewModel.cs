@@ -13,10 +13,12 @@ namespace MauiSandbox.ViewModels;
 
 public partial class CarListViewModel : BaseViewModel {
 	public ObservableCollection<Car> Cars { get; private set; } = [];
+	readonly CarApiService carApiService;
 
-	public CarListViewModel ()
+	public CarListViewModel (CarApiService carApiService)
 	{
 		Title = "Car List";
+		this.carApiService = carApiService;
 	}
 
 	[ObservableProperty]
@@ -34,7 +36,13 @@ public partial class CarListViewModel : BaseViewModel {
 			if (Cars.Any ())
 				Cars.Clear ();
 
-			var cars = App.CarService!.GetCars ();
+			// var cars = App.CarService!.GetCars ();
+			var cars = await carApiService.GetCars ();
+
+			if (cars == null) {
+				await Shell.Current.DisplayAlert ("Error", carApiService.StatusMessage, "OK");
+				return;
+			}
 
 			foreach (var car in cars)
 				Cars.Add (car);
