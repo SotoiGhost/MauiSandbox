@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSandbox", "MauiSandbox\MauiSandbox.csproj", "{78AA5C5A-123B-48B8-9411-45E392FC4357}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarListApp.Api", "CarListApp.Api\CarListApp.Api.csproj", "{EB735BFA-3DDD-432F-BC7F-0CDF8D02CD64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{78AA5C5A-123B-48B8-9411-45E392FC4357}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78AA5C5A-123B-48B8-9411-45E392FC4357}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78AA5C5A-123B-48B8-9411-45E392FC4357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB735BFA-3DDD-432F-BC7F-0CDF8D02CD64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB735BFA-3DDD-432F-BC7F-0CDF8D02CD64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB735BFA-3DDD-432F-BC7F-0CDF8D02CD64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB735BFA-3DDD-432F-BC7F-0CDF8D02CD64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
