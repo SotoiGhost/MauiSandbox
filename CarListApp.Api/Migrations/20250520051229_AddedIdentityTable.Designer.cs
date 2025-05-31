@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarListApp.Api.Migrations
 {
     [DbContext(typeof(CarListDbContext))]
-    partial class CarListDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520051229_AddedIdentityTable")]
+    partial class AddedIdentityTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -134,20 +137,6 @@ namespace CarListApp.Api.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "b392bf54-e59b-440d-bbbb-4c4d2a082ec5",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "15165f08-ee1d-40ef-aad2-63c836b50767",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -235,40 +224,6 @@ namespace CarListApp.Api.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "5c8af4fd-cb61-4c71-8fb9-030d1539e096",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "c2ac8028-31bd-40d5-ae96-ecbb5bc871e5",
-                            Email = "admin@localhost.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
-                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECvLTAB+EQq4pTNUhF6T8XXJ9N5smw/uL34Q1B8eVaZFeSTHKnLHT0sEgL+zETPngg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "16c6ed9b-ecac-48fb-90a3-d42e43d52145",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@localhost.com"
-                        },
-                        new
-                        {
-                            Id = "770bf83c-1fca-4af6-9762-2bc8dd94eab7",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "44e37c21-4a08-4a18-ae5e-3d090e13a21f",
-                            Email = "user@localhost.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER@LOCALHOST.COM",
-                            NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAB4GfrYRfWPO3kEYgr1vtTwJ1st3cFQlK8zyQEdrEN58vReYYSqRjSgvSGHa70BIA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "ab559260-3553-4be2-a6b0-c823b7eda8eb",
-                            TwoFactorEnabled = false,
-                            UserName = "user@localhost.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -329,18 +284,6 @@ namespace CarListApp.Api.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "5c8af4fd-cb61-4c71-8fb9-030d1539e096",
-                            RoleId = "b392bf54-e59b-440d-bbbb-4c4d2a082ec5"
-                        },
-                        new
-                        {
-                            UserId = "770bf83c-1fca-4af6-9762-2bc8dd94eab7",
-                            RoleId = "15165f08-ee1d-40ef-aad2-63c836b50767"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

@@ -1,46 +1,83 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder (args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy("AllowAllOrigins", builder =>
-	{
-		builder.AllowAnyOrigin()
-			   .AllowAnyMethod()
-			   .AllowAnyHeader();
+builder.Services.AddOpenApi ();
+builder.Services.AddCors (options => {
+	options.AddPolicy ("AllowAllOrigins", builder => {
+		builder.AllowAnyOrigin ()
+			   .AllowAnyMethod ()
+			   .AllowAnyHeader ();
 	});
 });
 
-var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "CarListApp.db");
-var connection = new SqliteConnection($"Data Source={dbPath}");
-builder.Services.AddDbContext<CarListDbContext>(options =>
-{
-	options.UseSqlite(connection);
+var dbPath = Path.Combine (Directory.GetCurrentDirectory (), "CarListApp.db");
+var connection = new SqliteConnection ($"Data Source={dbPath}");
+builder.Services.AddDbContext<CarListDbContext> (options => {
+	options.UseSqlite (connection);
+	options.ConfigureWarnings (w => w.Ignore (RelationalEventId.PendingModelChangesWarning));
 });
 
-var app = builder.Build();
+builder.Services.AddIdentityCore<IdentityUser> ()
+	.AddRoles<IdentityRole> ()
+	.AddEntityFrameworkStores<CarListDbContext> ();
+
+builder.Services.AddAuthentication (options => {
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer (options => {
+	options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
+		ValidateIssuer = true,
+		ValidIssuer = builder.Configuration ["JwtSettings:Issuer"],
+		ValidateAudience = true,
+		ValidAudience = builder.Configuration ["JwtSettings:Audience"],
+		ValidateLifetime = true,
+		ClockSkew = TimeSpan.Zero,
+		IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration ["JwtSettings:Key"]!)),
+	};
+});
+
+builder.Services.AddAuthorization (options => {
+	options.FallbackPolicy = new AuthorizationPolicyBuilder ()
+		.AddAuthenticationSchemes ()
+		.RequireAuthenticatedUser ()
+		.Build ();
+});
+
+var app = builder.Build ();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.MapOpenApi();
+if (app.Environment.IsDevelopment ()) {
+	app.MapOpenApi ();
 }
 
-app.UseHttpsRedirection();
-app.UseCors("AllowAllOrigins");
+app.UseHttpsRedirection ();
 
-var summaries = new[]
+app.UseAuthentication ();
+app.UseAuthorization ();
+
+app.UseCors ("AllowAllOrigins");
+
+var summaries = new []
 {
 	"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/cars", async (CarListDbContext db) => await db.Cars.ToListAsync());
-app.MapGet("/cars/{id}", async (int id, CarListDbContext db) => await db.Cars.FindAsync(id) is Car car ? Results.Ok(car) : Results.NotFound());
+app.MapGet ("/cars", async (CarListDbContext db) => await db.Cars.ToListAsync ());
+
+app.MapGet ("/cars/{id}", async (int id, CarListDbContext db) => await db.Cars.FindAsync (id) is Car car ? Results.Ok (car) : Results.NotFound ());
 
 app.MapPut ("/cars/{id}", async (int id, Car car, CarListDbContext db) => {
 	var record = await db.Cars.FindAsync (id);
@@ -63,10 +100,61 @@ app.MapDelete ("/cars/{id}", async (int id, CarListDbContext db) => {
 	return Results.NoContent ();
 });
 
-app.MapPost("/cars", async (Car car, CarListDbContext db) => {
+app.MapPost ("/cars", async (Car car, CarListDbContext db) => {
 	await db.AddAsync (car);
 	await db.SaveChangesAsync ();
 	return Results.Created ($"/cars/{car.Id}", car);
 });
 
-app.Run();
+app.MapPost ("/login", async (LoginDto loginDto, UserManager<IdentityUser> userManager) => {
+	var user = await userManager.FindByNameAsync (loginDto.Username);
+	if (user is null) return Results.Unauthorized ();
+
+	var isValidPassword = await userManager.CheckPasswordAsync (user, loginDto.Password);
+	if (!isValidPassword) return Results.Unauthorized ();
+
+	// Generate an access token
+	var key = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (builder.Configuration ["JwtSettings:Key"]!));
+	var credentials = new SigningCredentials (key, SecurityAlgorithms.HmacSha256);
+
+	var roles = await userManager.GetRolesAsync (user);
+	var claims = await userManager.GetClaimsAsync (user);
+
+	var tokenClaims = new List<Claim> {
+		new Claim (JwtRegisteredClaimNames.Sub, user.Id),
+		new Claim (JwtRegisteredClaimNames.Jti, Guid.CreateVersion7 ().ToString ()),
+		new Claim (JwtRegisteredClaimNames.Email, user.Email!),
+		new Claim ("email_confirmed", user.EmailConfirmed.ToString ()),
+	}.Union (claims)
+	.Union (roles.Select (r => new Claim (ClaimTypes.Role, r)));
+
+	var securityToken = new JwtSecurityToken (
+		issuer: builder.Configuration ["JwtSettings:Issuer"],
+		audience: builder.Configuration ["JwtSettings:Audience"],
+		claims: claims,
+		expires: DateTime.UtcNow.AddMinutes (Convert.ToInt32 (builder.Configuration ["JwtSettings:DurationInMinutes"])),
+		signingCredentials: credentials
+	);
+
+	var accessToken = new JwtSecurityTokenHandler ().WriteToken (securityToken);
+
+	var response = new AuthResponseDto {
+		UserId = user.Id,
+		Username = user.UserName,
+		Token = accessToken
+	};
+	return Results.Ok (response);
+}).AllowAnonymous ();
+
+app.Run ();
+
+internal class LoginDto {
+	public string Username { get; set; }
+	public string Password { get; set; }
+}
+
+internal class AuthResponseDto {
+	public string UserId { get; set; }
+	public string Username { get; set; }
+	public string Token { get; set; }
+}
