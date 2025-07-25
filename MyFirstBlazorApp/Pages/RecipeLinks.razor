@@ -1,0 +1,13 @@
+@code {
+    List<Recipe> recipes = new List<Recipe>
+    {
+        new Recipe { Id = 1, Name = "Spaghetti", Description = "Classic Italian pasta dish." },
+        new Recipe { Id = 2, Name = "Tacos", Description = "Mexican dish with folded tortillas." },
+        new Recipe { Id = 3, Name = "Sushi", Description = "Japanese dish of vinegared rice and seafood." }
+    };
+}
+
+@foreach (var recipe in recipes)
+{
+    <NavLink href="@($"/recipe/{recipe.Id}")" Match="NavLinkMatch.Prefix">View Details</NavLink>
+}

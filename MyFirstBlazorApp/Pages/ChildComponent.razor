@@ -1,0 +1,20 @@
+@code {
+    [Parameter]
+    public EventCallback<Recipe> OnRecipeSelected { get; set; }
+
+    List<Recipe> recipes = new List<Recipe>
+    {
+        new Recipe { Id = 1, Name = "Spaghetti", Description = "Classic Italian pasta dish." },
+        new Recipe { Id = 2, Name = "Tacos", Description = "Mexican dish with folded tortillas." },
+        new Recipe { Id = 3, Name = "Sushi", Description = "Japanese dish of vinegared rice and seafood." }
+    };
+
+    private void SelectRecipe(int recipeId)
+    {
+        var selectedRecipe = recipes.FirstOrDefault(r => r.Id == recipeId);
+        if (selectedRecipe != null)
+        {
+            OnRecipeSelected.InvokeAsync(selectedRecipe);
+        }
+    }
+}

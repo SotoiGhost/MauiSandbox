@@ -1,0 +1,21 @@
+@page "/editrecipe/{recipeId:int}"
+
+@code {
+    [Parameter]
+    public int recipeId { get; set; }
+
+    string recipeName = "Default Recipe Name";
+    string recipeDescription = "Default Recipe Description";
+
+    private void SaveRecipe()
+    {
+        Console.WriteLine($"Recipe saved: {recipeName} - {recipeDescription}");
+    }
+}
+
+<h3>Edit Recipe</h3>
+<input @bind="recipeName" placeholder="Enter recipe name" />
+<br />
+<textarea @bind="recipeDescription" placeholder="Enter recipe description"></textarea>
+<br />
+<button @onclick="SaveRecipe">Save recipe</button>
